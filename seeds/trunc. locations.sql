@@ -1,0 +1,1 @@
+truncate table locations CASCADE;

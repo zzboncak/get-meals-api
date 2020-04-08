@@ -1,26 +1,11 @@
-# Express Boilerplate!
+# Get Meals API
 
-This is a boilerplate project used for starting new projects!
+To set up the database:
+1. Make sure you are in psql in your command line.
+2. Run the SQL command `CREATE USER foodles;`.
+3. Run the SQL command `CREATE DATABASE get_meals OWNER foodles;`.
+4. Ensure your .env file is created and has the line `DB_URL="postgresql://foodles@localhost/get_meals"`.
+5. Exit psql and run the command `npm run migrate` to create the tables in the database.
+6. To seed the database with a few locations, run `psql -U foodles -d get_meals -f ./seeds/seed.locations.sql` in your command line.
 
-## Set up
-
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
-
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
-
-## Scripts
-
-Start the application `npm start`
-
-Start nodemon for the application `npm run dev`
-
-Run the tests `npm test`
-
-## Deploying
-
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+By [Sejin Hwang](https://github.com/seejins), [John Lee](https://github.com/johlee92), [Victoria Moore](https://github.com/JaggerSofia), [Peggy Sturman](https://github.com/glamazon), and [Zack Zboncak](https://github.com/zzboncak).
