@@ -26,6 +26,7 @@ const serializeLocation = location => ({
       const knexInstance = req.app.get('db')
       LocationService.getAllLocations(knexInstance)
         .then(locations => {
+          //limit size to the first 50 elements
           res.json(locations.map(serializeLocation))
         })
         .catch(next)
