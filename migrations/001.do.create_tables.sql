@@ -12,6 +12,8 @@ CREATE TABLE locations (
     city TEXT NOT NULL,
     state TEXT NOT NULL,
     zip INTEGER,
+    location_longitude REAL NOT NULL,
+    location_latitude REAL NOT NULL,
     open_hour TIME,
     close_hour TIME,
     website TEXT,
