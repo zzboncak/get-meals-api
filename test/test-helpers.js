@@ -29,22 +29,56 @@ function makeLocationsArray() {
     ]
 }
 
+function makeCommentsArray() {
+    return[
+        {
+            id: 1,
+            location_id: 1,
+            comment_text: 'location 1 comment 1',
+            has_concern: false
+        },
+        {
+            id: 2,
+            location_id: 1,
+            comment_text: 'location 1 comment 2',
+            has_concern: false
+        },
+        {
+            id: 3,
+            location_id: 2,
+            comment_text: 'location 2 comment 1',
+            has_concern: false
+        },
+        {
+            id: 4,
+            location_id: 2,
+            comment_text: 'location 2 comment 2',
+            has_concern: false
+        }
+    ]
+}
+
 function makeTestFixtures() {
     const testLocations = makeLocationsArray();
-    return { testLocations }
+    const testComments = makeCommentsArray();
+    return { testLocations, testComments }
 }
 
 function cleanTables(db) {
     return db.transaction(trx =>
         trx.raw(
             `TRUNCATE
-                locations CASCADE;
+                locations,
+                comments
+                CASCADE;
             `
         )
         .then(() =>
             Promise.all([
                 trx.raw(`ALTER SEQUENCE locations_id_seq minvalue 0 START WITH 1`),
                 trx.raw(`SELECT setval('locations_id_seq', 0)`),
+                trx.raw(`ALTER SEQUENCE comments_id_seq minvalue 0 START WITH 1`),
+                trx.raw(`SELECT setval('comments_id_seq', 0)`),
             ])
         )
     )
@@ -53,6 +87,12 @@ function cleanTables(db) {
 function seedLocationsTable(db, location) {
     return db.transaction(async trx => {
         await trx.into('locations').insert(location)
+    })
+}
+
+function seedCommentsTable(db, comment) {
+    return db.transaction(async trx => {
+        await trx.into('comments').insert(comment)
     })
 }
 
@@ -72,9 +112,20 @@ function makeExpectedLocation(location) {
     }
 }
 
+function makeExpectedComment(comment) {
+    return {
+        id: comment.id,
+        location_id: comment.location_id,
+        comment_text: comment.comment_text,
+        has_concern: comment.has_concern
+    }
+}
+
 module.exports = {
     makeTestFixtures,
     cleanTables,
     seedLocationsTable,
+    seedCommentsTable,
     makeExpectedLocation,
+    makeExpectedComment,
 }

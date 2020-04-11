@@ -2,12 +2,13 @@ const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 
-describe('Location Endpoints', function() {
+describe('Comments Endpoints', function() {
     let db;
   
     //get the test data from the helper
     const {
-      testLocations
+      testLocations,
+      testComments,
     } = helpers.makeTestFixtures()
   
     //creates the knex instance for the database before each test suite
@@ -25,37 +26,31 @@ describe('Location Endpoints', function() {
   
     afterEach('cleanup', () => helpers.cleanTables(db))
   
-    describe(`GET /api/locations`, () => {
-        context(`Given no locations`, () => {
+    describe(`GET /api/comments`, () => {
+        context(`Given no comments`, () => {
             it(`responds with 200 and an empty list`, () => {
                 return supertest(app)
-                    .get('/api/locations')
+                    .get('/api/comments')
                     .expect(200, [])
             })
         })
   
-        context('Given there are locations in the database', () => {
-            beforeEach('insert locations', () =>
-                helpers.seedLocationsTable(
-                    db,
-                    testLocations,
-                )
-            )
+        context('Given there are comments in the database', () => {
+            beforeEach('insert comments', () => {
+                helpers.seedLocationsTable(db,testLocations)
+                helpers.seedCommentsTable(db,testComments)
+            })
     
-            it('responds with 200 and all of the locations', () => {
-                const expectedLocations = testLocations.map(location =>
-                    helpers.makeExpectedLocation(
-                    location
-                )
+            it('responds with 200 and all of the comments', () => {
+                const expectedComments = testComments.map(comment =>
+                    helpers.makeExpectedComment(comment)
             )
             return supertest(app)
-                .get('/api/locations')
-                .expect(200, expectedLocations)
+                .get('/api/comments')
+                .expect(200, expectedComments)
             })
         })
   
-        context(`Given an XSS attack location`, () => {
-        })
     })
 
 })

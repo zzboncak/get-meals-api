@@ -17,8 +17,11 @@ const LocationService = {
     },
 
     //get the comments related to the specific location
-    getLocationComments(knew, id) {
-        return knex.select('*').from('comments');
+
+    getLocationComments(knex, id) {
+        return knex
+            .select('*').from('comments')
+
     },
 
     getById(knex, id) {
