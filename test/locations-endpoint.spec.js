@@ -26,7 +26,7 @@ describe('Location Endpoints', function() {
     afterEach('cleanup', () => helpers.cleanTables(db))
   
     describe(`GET /api/locations`, () => {
-        context(`Given no articles`, () => {
+        context(`Given no locations`, () => {
             it(`responds with 200 and an empty list`, () => {
                 return supertest(app)
                     .get('/api/locations')
@@ -42,7 +42,7 @@ describe('Location Endpoints', function() {
                 )
             )
     
-            it('responds with 200 and all of the articles', () => {
+            it('responds with 200 and all of the locations', () => {
                 const expectedLocations = testLocations.map(location =>
                     helpers.makeExpectedLocation(
                     location
