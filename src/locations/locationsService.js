@@ -3,6 +3,7 @@ const LocationService = {
         return knex.select('*').from('locations')
     },
 
+    //
     insertLocation(knex, newLocation) {
         // returned an empty object that says that the promise has been resolved
         // return Promise.resolve({})
@@ -13,6 +14,12 @@ const LocationService = {
             .then(arrayOfRows => {
                 return arrayOfRows[0]
             })
+    },
+
+    //get the comments related to the specific location
+    getLocationComments(knew, id) {
+        return knex
+            .select('*').from('comments')
     },
 
     getById(knex, id) {
