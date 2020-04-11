@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
+const locationsRouter = require('./locations/locationsRouter');
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.use(cors());
 app.get('/foodles', (req, res) => {
   res.send('Hello, team Foodles!');
 });
+
+app.use('/api/locations', locationsRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response;
