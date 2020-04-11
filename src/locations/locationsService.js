@@ -1,6 +1,6 @@
 const LocationService = {
     getAllLocations(knex) {
-        return knex.select('*').from('locations')
+        return knex.select('*').from('locations');
     },
 
     //
@@ -13,29 +13,35 @@ const LocationService = {
             .returning('*')
             .then(arrayOfRows => {
                 return arrayOfRows[0]
-            })
+            });
     },
 
     //get the comments related to the specific location
+
     getLocationComments(knex, id) {
         return knex
             .select('*').from('comments')
+
     },
 
     getById(knex, id) {
-        return knex.from('locations').select('*').where('id', id).first()
+        return knex.from('locations').select('*').where('id', id).first();
+    },
+
+    getByAddress(knex, street_address) {
+        return knex.from('locations').select('*').where('street_address', street_address).first();
     },
 
     deleteLocation(knex, id) {
         return knex('locations')
             .where({ id })
-            .delete()
+            .delete();
     },
 
     updateLocation(knex, id, newLocationFields) {
         return knex('locations')
             .where({ id })
-            .update(newLocationFields)
+            .update(newLocationFields);
     }
 }
 
