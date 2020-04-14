@@ -25,6 +25,7 @@ const LocationService = {
     },
 
     getById(knex, id) {
+        // Need to also check the tag relations table to see all of the tags associated with a location_id
         return knex.from('locations').select('*').where('id', id).first();
     },
 
