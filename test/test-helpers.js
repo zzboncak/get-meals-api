@@ -7,8 +7,8 @@ function makeLocationsArray() {
             city: 'Naperville', 
             state: 'Illinois',
             zip: 60563,
-            open_hour: '11:00 AM',
-            close_hour: '1:00 PM',
+            open_hour: '11:00:00',
+            close_hour: '13:00:00',
             website: 'www.highpoint.church',
             location_description: 'They pass out food and pantry goods',
             location_type: 'Other Non-Profit'
@@ -20,8 +20,8 @@ function makeLocationsArray() {
             city: 'St. Charles',
             state: 'Illinois',
             zip: 60174,
-            open_hour: '10:00 AM',
-            close_hour: '2:00 PM',
+            open_hour: '10:00:00',
+            close_hour: '14:00:00',
             website: 'centralusa.salvationarmy.org/tricity/',
             location_description: 'They do the most good',
             location_type: 'Food Bank'
