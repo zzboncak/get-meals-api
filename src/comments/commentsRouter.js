@@ -25,8 +25,8 @@ commentsRouter
   })
   .post(jsonParser, (req, res, next) => {
     //need to make sure the client passes comment_id in a POST request
-    const { location_id, comment_text } = req.body
-    const newComment = { location_id, comment_text }
+    const { location_id, comment_text, has_concern } = req.body
+    const newComment = { location_id, comment_text, has_concern }
 
     for (const [key, value] of Object.entries(newComment))
       if (value == null)
@@ -62,6 +62,13 @@ commentsRouter
         }
         res.comment = comment
         next()
+      })
+      .catch(next)
+  })
+  .get((req, res, next) => {
+    CommentsService.getCommentById(req.app.get('db'), req.params.comment_id)
+      .then(comment => {
+        res.json(serializeComment(comment))
       })
       .catch(next)
   })
