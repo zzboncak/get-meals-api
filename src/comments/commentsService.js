@@ -3,10 +3,7 @@ const CommentsService = {
         return knex.select('*').from('comments')
     },
 
-    //
     insertComment(knex, newComment) {
-        // returned an empty object that says that the promise has been resolved
-        // return Promise.resolve({})
         return knex
             .insert(newComment)
             .into('comments')
