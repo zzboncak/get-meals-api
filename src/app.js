@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
 const locationsRouter = require('./locations/locationsRouter');
 const commentsRouter = require('./comments/commentsRouter');
+const tagsRouter = require('./tags/tagsRouter');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.get('/foodles', (req, res) => {
 
 app.use('/api/locations', locationsRouter);
 app.use('/api/comments', commentsRouter);
+app.use('/api/tags', tagsRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response;

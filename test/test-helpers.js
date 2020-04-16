@@ -11,7 +11,9 @@ function makeLocationsArray() {
             close_hour: '13:00:00',
             website: 'www.highpoint.church',
             location_description: 'They pass out food and pantry goods',
-            location_type: 'Other Non-Profit'
+            location_type: 'Other Non-Profit',
+            location_longitude: -88.12316,
+            location_latitude: 41.805287
         },
         {
             id: 2,
@@ -24,7 +26,9 @@ function makeLocationsArray() {
             close_hour: '14:00:00',
             website: 'centralusa.salvationarmy.org/tricity/',
             location_description: 'They do the most good',
-            location_type: 'Food Bank'
+            location_type: 'Food Bank',
+            location_longitude: -88.29455,
+            location_latitude: 41.901653
         }
     ]
 }
@@ -58,10 +62,32 @@ function makeCommentsArray() {
     ]
 }
 
+function makeTagsArray() {
+    return[
+        {
+            id: 1,
+            tag_name: "1"
+        },
+        {
+            id: 2,
+            tag_name: "2"
+        },
+        {
+            id: 3,
+            tag_name: "3"
+        },
+        {
+            id: 4,
+            tag_name: "4"
+        },
+    ]
+}
+
 function makeTestFixtures() {
     const testLocations = makeLocationsArray();
     const testComments = makeCommentsArray();
-    return { testLocations, testComments }
+    const testTags = makeTagsArray();
+    return { testLocations, testComments, testTags };
 }
 
 function cleanTables(db) {
@@ -69,7 +95,8 @@ function cleanTables(db) {
         trx.raw(
             `TRUNCATE
                 locations,
-                comments
+                comments,
+                tags
                 CASCADE;
             `
         )
@@ -96,6 +123,12 @@ function seedCommentsTable(db, comment) {
     })
 }
 
+function seedTagsTable(db, tag) {
+    return db.transaction(async trx => {
+        await trx.into('tags').insert(tag)
+    })
+}
+
 function makeExpectedLocation(location) {
     return {
         id: location.id,
@@ -108,7 +141,9 @@ function makeExpectedLocation(location) {
         close_hour: location.close_hour,
         website: location.website,
         location_description: location.location_description,
-        location_type: location.location_type
+        location_type: location.location_type,
+        location_longitude: location.location_longitude,
+        location_latitude: location.location_latitude
     }
 }
 
@@ -121,6 +156,13 @@ function makeExpectedComment(comment) {
     }
 }
 
+function makeExpectedTag(tag) {
+    return {
+        id: tag.id,
+        tag_name: tag.tag_name
+    }
+}
+
 module.exports = {
     makeTestFixtures,
     cleanTables,
@@ -128,4 +170,6 @@ module.exports = {
     seedCommentsTable,
     makeExpectedLocation,
     makeExpectedComment,
+    makeExpectedTag,
+    seedTagsTable,
 }

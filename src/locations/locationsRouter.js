@@ -86,27 +86,39 @@ const serializeLocation = location => ({
     })
   
     locationsRouter
-        .route('/:location_id')
-        .all((req, res, next) => {
-            LocationService.getById(
-                req.app.get('db'),
-                req.params.location_id
-        )
-        .then(location => {
-          if (!location) {
-            return res.status(404).json({
-              error: { message: `Location doesn't exist` }
-            })
-          }
-          //need to talk about this one below res.location might be a problem
-          res.locations = location
-          //don't forget to call enxt so the next middleware happens!
-          next()
-        })
-        .catch(next)
+      .route('/:location_id')
+      .all((req, res, next) => {
+        let location = LocationService.getById(req.app.get('db'), req.params.location_id);
+        let tags = LocationService.getLocationTags(req.app.get('db'), req.params.location_id);
+        let comments = LocationService.getLocationComments(req.app.get('db'), req.params.location_id);
+
+        Promise.all([location, tags, comments]) // Retrieve the location data, tags associated with the location, and comments associated with the location
+          .then(values => {
+            console.log(values);
+            let location = values[0];
+            let tags = values[1].map(obj => obj.tag_name); // the service object returns an array of individual objects, this is to just get an array of the tag names
+            let comments = values[2];
+
+            if(!location) {
+              return res.status(404).json({
+                error: { message: `Location doesn't exist` }
+              })
+            }
+
+            res.locations = location;
+            res.tags = tags;
+            res.comments = comments;
+
+            next()
+          })
+      .catch(next)
     })
     .get((req, res, next) => {
-        res.json(serializeLocation(res.locations))
+        res.json({
+          location: serializeLocation(res.locations),
+          tags: res.tags,
+          comments: res.comments
+        })
     })
     .delete((req, res, next) => {
         LocationService.deleteLocation(
