@@ -16,16 +16,13 @@ const LocationService = {
             });
     },
 
-    //get the comments related to the specific location
-
-    getLocationComments(knex, id) {
+    getLocationComments(knex, location_id) {
         return knex
-            .select('*').from('comments')
+            .select('*').from('comments').where({ location_id })
 
     },
 
     getById(knex, id) {
-        // Need to also check the tag relations table to see all of the tags associated with a location_id
         return knex.from('locations').select('*').where('id', id).first();
     },
 
@@ -36,6 +33,7 @@ const LocationService = {
             .join('tags as t', 'tr.tag_id', '=', 't.id')
             .where({ location_id })
     },
+
 
     getByAddress(knex, street_address) {
         return knex.from('locations').select('*').where('street_address', street_address).first();
