@@ -152,6 +152,34 @@ const serializeLocation = location => ({
         })
         .catch(next)
     })
-  
+
+locationsRouter
+    .route('/:location_id/tag')
+    .post(jsonParser, (req, res, next) => {
+      const { location_id } = req.params;
+      const { tag_id } = req.body;
+      const newTagRelation = { location_id, tag_id };
+
+      console.log(newTagRelation);
+
+      for (const [key, value] of Object.entries(newTagRelation)) {
+        if (value == null) {
+          return res.status(400).json({
+            error: { message: `Missing '${key}' in request body` }
+          })
+        }
+      }
+
+      LocationService.addTagRelation(
+        req.app.get('db'),
+        newTagRelation
+      )
+        .then(relation => {
+          res.status(201) // let the user know the tag relation was created
+          .end()
+        })
+        .catch(next);
+
+    })
 
 module.exports = locationsRouter
