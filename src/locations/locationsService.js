@@ -49,6 +49,16 @@ const LocationService = {
         return knex('locations')
             .where({ id })
             .update(newLocationFields);
+    },
+
+    addTagRelation(knex, tagRelation) {
+        return knex
+            .insert(tagRelation)
+            .into('tag_relations')
+            .returning('*')
+            .then(arrayOfRows => {
+                return arrayOfRows[0]
+            });
     }
 }
 
