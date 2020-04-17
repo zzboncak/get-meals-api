@@ -68,6 +68,7 @@ fetch(`https://frozen-everglades-23155.herokuapp.com/api/locations`)
 
 Calling this endpoint will return information on the location, and any tags or comments associated with it.
 
+**Example:**
 ```javascript
 fetch(`https://frozen-everglades-23155.herokuapp.com/api/locations/2`)
     .then(res => res.json())
@@ -94,6 +95,141 @@ fetch(`https://frozen-everglades-23155.herokuapp.com/api/locations/2`)
     },
     "tags": [],
     "comments": []
+}
+```
+#### Add a tag to a location using POST /locations/:location_id/tag
+
+**Requirements:** Be sure to supply the `location_id` in the parameters, and a `tag_id` in the request body
+
+**Example request:**
+```javascript
+fetch(`https://frozen-everglades-23155.herokuapp.com/api/locations/2/tag`, {
+    method: "POST",
+    body: {
+        "tag_id": 1
+    }
+})
+    .then(res => {
+        if (!res.ok) {
+            throw new Error('Could not add tag relation')
+        }
+    })
+    .catch(err => console.log(err))
+```
+**NOTE** The server simply responds with a status code of 201 to let you know the relation was created. Once you GET the location again, you'll find the tag has been added
+
+#### Read what tags are available with GET /tags
+
+**Example request:**
+```javascript
+fetch(`https://frozen-everglades-23155.herokuapp.com/api/tags`)
+    .then(res => {
+        if(!res.ok) {
+            throw new Error('Could not fetch the tags')
+        }
+        return res.json()
+    })
+    .then(data => console.log(data))
+    .catch(err => console.log(err))
+```
+**Example response:**
+```javascript
+[
+    {
+        "id": 1,
+        "tag_name": "Hot food"
+    },
+    {
+        "id": 2,
+        "tag_name": "Dry goods"
+    },
+    {
+        "id": 3,
+        "tag_name": "Pantry items"
+    },
+    {
+        "id": 4,
+        "tag_name": "Breakfast for kids"
+    },
+    {
+        "id": 5,
+        "tag_name": "Lunch for kids"
+    },
+    {
+        "id": 6,
+        "tag_name": "Free meals"
+    },
+    {
+        "id": 7,
+        "tag_name": "Free meals for healthcare workers"
+    },
+    {
+        "id": 8,
+        "tag_name": "Free for kids"
+    },
+    {
+        "id": 9,
+        "tag_name": "Discount meals"
+    },
+    {
+        "id": 10,
+        "tag_name": "Produce"
+    },
+    {
+        "id": 11,
+        "tag_name": "Free for seniors"
+    },
+    {
+        "id": 12,
+        "tag_name": "Household amenities"
+    },
+    {
+        "id": 13,
+        "tag_name": "Drive-thru"
+    },
+    {
+        "id": 14,
+        "tag_name": "Curbside Pickup"
+    },
+    {
+        "id": 15,
+        "tag_name": "Accepts EBT"
+    }
+]
+```
+
+#### Post a comments about a location with POST /comments
+
+Use this endpoint to post a comment about a location. Be sure to supply the `location_id` and `comment_text` in the request body, these are **required**. *Optional* supply `has_concern` as a boolean to alert an admin that info about a location is inaccurate.
+
+**Example:**
+```javascript
+let newComment = {
+    location_id: 2,
+    comment_text: 'This place distributes eggs, but only 1 dozen per family',
+    has_concern: false
+};
+
+fetch(`https://frozen-everglades-23155.herokuapp.com/api/comments`, {
+    method: "POST",
+    body: JSON.stringify(newComment)
+})
+    .then(res => {
+        if (!res.ok) {
+            throw new Error('Could not add tag relation')
+        }
+        return res.json()
+    })
+    .then(datt => console.log(data))
+    .catch(err => console.log(err))
+```
+**Example response:**
+```javascript
+{
+    "id": 7,
+    "location_id": 2,
+    "comment_text": "This place distributes eggs, but only 1 dozen per family",
+    "has_concern": false
 }
 ```
 
