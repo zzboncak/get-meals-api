@@ -97,6 +97,55 @@ fetch(`https://frozen-everglades-23155.herokuapp.com/api/locations/2`)
     "comments": []
 }
 ```
+#### Add a location using POST /locations/
+
+**Required fields:** `location_name` (type = string), `street_address` (type = string), `city` (type = string), `state` (type = string), `zip` (type = integer). 
+
+*Optional fields:* `open_hour` (type = time), `close_hour` (type = time), `website` (type = string), `location_description` (type = string), `location_type` (must be one of "Restaurant", "Food Bank", "School", or "Other Non-Profit").
+
+If successful, the server responds with a status of 201 and the location data (see below). If you're missing a required, field, you'll get a status of 400. Longitude and latitude are calculated automatically via [Google Maps Geocoding API](https://github.com/googlemaps/google-maps-services-js).
+
+**Example request:**
+```javascript
+const newLocation = {
+    location_name: "DuPage Pads",
+    street_address: "601 West Liberty",
+    city: "Wheaton",
+    state: "IL",
+    zip: 60187
+};
+
+fetch(`https://frozen-everglades-23155.herokuapp.com/api/locations`, {
+    method: "POST",
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(newLocation)
+})
+    .then(res => res.json())
+    .then(data => console.log(data))
+    .catch(err => console.log(err))
+```
+
+**Example response:**
+```javascript
+{
+    "id": 3,
+    "location_name": "DuPage Pads",
+    "street_address": "601 West Liberty",
+    "city": "Wheaton",
+    "state": "IL",
+    "zip": 60187,
+    "location_longitude": -88.11469,
+    "location_latitude": 41.864346,
+    "open_hour": null,
+    "close_hour": null,
+    "website": null,
+    "location_description": "",
+    "location_type": null
+}
+```
+
 #### Add a tag to a location using POST /locations/:location_id/tag
 
 **Requirements:** Be sure to supply the `location_id` in the parameters, and a `tag_id` in the request body
@@ -105,6 +154,9 @@ fetch(`https://frozen-everglades-23155.herokuapp.com/api/locations/2`)
 ```javascript
 fetch(`https://frozen-everglades-23155.herokuapp.com/api/locations/2/tag`, {
     method: "POST",
+    headers: {
+        'Content-Type': 'application/json'
+    },
     body: {
         "tag_id": 1
     }
@@ -212,6 +264,9 @@ let newComment = {
 
 fetch(`https://frozen-everglades-23155.herokuapp.com/api/comments`, {
     method: "POST",
+    headers: {
+        'Content-Type': 'application/json'
+    },
     body: JSON.stringify(newComment)
 })
     .then(res => {
