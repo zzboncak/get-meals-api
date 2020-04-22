@@ -7,7 +7,8 @@ describe('Location Endpoints', function() {
   
     //get the test data from the helper
     const {
-      testLocations
+      testLocations,
+      testTags
     } = helpers.makeTestFixtures()
   
     //creates the knex instance for the database before each test suite
@@ -58,7 +59,6 @@ describe('Location Endpoints', function() {
         })
     })
 
-    // post tests not complete; appears to be interferring with location router item
     describe('POST /api/locations', () => {
         const newLocation = {
             location_name: 'Test Location',
@@ -152,6 +152,31 @@ describe('Location Endpoints', function() {
                     .delete(`/api/locations/${locationId}`)
                     .expect(404, { error: { message: `Location doesn't exist` } })
             })
+        })
+    })
+
+    describe(`POST /api/locations/:location_id/tag`, () => {
+        beforeEach('insert locations', () =>
+            helpers.seedLocationsTable(
+                db,
+                testLocations,
+            )
+        )
+
+        beforeEach('insert tags', () =>
+            helpers.seedTagsTable(
+                db,
+                testTags,
+            )
+        )
+
+        it(`responds with 201 to show the tag relation was created`, () => {
+            const tagRelationToAdd = { tag_id: 1 };
+
+            return supertest(app)
+                .post('/api/locations/1/tag')
+                .send(tagRelationToAdd)
+                .expect(201)
         })
     })
 

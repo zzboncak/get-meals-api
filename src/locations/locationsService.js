@@ -1,12 +1,11 @@
 const LocationService = {
     getAllLocations(knex) {
-        return knex.select('*').from('locations');
+        return knex
+            .select('*')
+            .from('locations');
     },
 
-    //
     insertLocation(knex, newLocation) {
-        // returned an empty object that says that the promise has been resolved
-        // return Promise.resolve({})
         return knex
             .insert(newLocation)
             .into('locations')
@@ -18,12 +17,18 @@ const LocationService = {
 
     getLocationComments(knex, location_id) {
         return knex
-            .select('*').from('comments').where({ location_id })
+            .select('*')
+            .from('comments')
+            .where({ location_id })
 
     },
 
     getById(knex, id) {
-        return knex.from('locations').select('*').where('id', id).first();
+        return knex
+            .from('locations')
+            .select('*')
+            .where('id', id)
+            .first();
     },
 
     getLocationTags(knex, location_id) {
@@ -36,7 +41,11 @@ const LocationService = {
 
 
     getByAddress(knex, street_address) {
-        return knex.from('locations').select('*').where('street_address', street_address).first();
+        return knex
+            .from('locations')
+            .select('*')
+            .where('street_address', street_address)
+            .first();
     },
 
     deleteLocation(knex, id) {
