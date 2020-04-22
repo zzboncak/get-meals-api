@@ -13,7 +13,7 @@ function makeLocationsArray() {
             location_description: 'They pass out food and pantry goods',
             location_type: 'Other Non-Profit',
             location_longitude: -88.12316,
-            location_latitude: 41.805287
+            location_latitude: 41.805286
         },
         {
             id: 2,

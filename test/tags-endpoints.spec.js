@@ -7,8 +7,6 @@ describe('Tags Endpoints', () => {
   
     //get the test data from the helper
     const {
-      testLocations,
-      testComments,
       testTags
     } = helpers.makeTestFixtures();
   
@@ -33,13 +31,13 @@ describe('Tags Endpoints', () => {
                 return supertest(app)
                     .get('/api/tags')
                     .expect(200, [])
-            })
-        })
+            });
+        });
   
         context('Given there are tags in the database', () => {
             beforeEach('insert tags', () => {
-                helpers.seedTagsTable(db, testTags);
-            })
+                return helpers.seedTagsTable(db, testTags);
+            });
     
             it('responds with 200 and all of the tags', () => {
                 const expectedTags = testTags.map(tag =>
@@ -48,9 +46,27 @@ describe('Tags Endpoints', () => {
                 return supertest(app)
                     .get('/api/tags')
                     .expect(200, expectedTags)
-            })
-        })
+            });
+        });
   
+    });
+
+    describe(`POST /api/tags`, () => {
+        it(`adds a tag to the database`, () => {
+            const newTag = { tag_name: 'new tag!' };
+            const expectedTag = {
+                id: 1,
+                tag_name: 'new tag!'
+            };
+
+            return supertest(app)
+                .post('/api/tags')
+                .send(newTag)
+                .expect(201)
+                .expect(res => {
+                    expect(res.body.tag_name).to.eql(expectedTag.tag_name)
+                })
+        })
     })
 
 })

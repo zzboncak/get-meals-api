@@ -2,7 +2,7 @@ const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 
-describe.only('Comments Endpoints', function() {
+describe('Comments Endpoints', function() {
     let db;
   
     //get the test data from the helper

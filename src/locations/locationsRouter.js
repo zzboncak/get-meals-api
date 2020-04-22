@@ -31,14 +31,11 @@ locationsRouter
 		const knexInstance = req.app.get('db')
 		LocationService.getAllLocations(knexInstance)
 		.then(locations => {
-			//limit size to the first 50 elements
 			res.json(locations.map(serializeLocation))
 		})
 		.catch(next)
 	})
 	.post(jsonParser, (req, res, next) => {
-		//discuss with team which parameters should be required
-		console.log(req.body);
 		const { 
 			location_name, 
 			street_address, 
@@ -64,8 +61,6 @@ locationsRouter
 			location_description,
 			location_type
 		};
-
-		console.log('newLocation:', newLocation);
 
 		const requiredFields = {
 			location_name,
@@ -132,7 +127,6 @@ locationsRouter
 
 		Promise.all([location, tags, comments]) // Retrieve the location data, tags associated with the location, and comments associated with the location
 			.then(values => {
-			console.log(values);
 			let location = values[0];
 			let tags = values[1].map(obj => obj.tag_name); // the service object returns an array of individual objects, this is to just get an array of the tag names
 			let comments = values[2];
@@ -221,8 +215,6 @@ locationsRouter
       const { location_id } = req.params;
       const { tag_id } = req.body;
       const newTagRelation = { location_id, tag_id };
-
-      console.log(newTagRelation);
 
       for (const [key, value] of Object.entries(newTagRelation)) {
         if (value == null) {
