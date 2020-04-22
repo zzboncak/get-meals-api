@@ -42,7 +42,7 @@ tagsRouter
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${tag.id}`))
-          .json(serializeComment(tag))
+          .json(serializeTag(tag))
       })
       .catch(next)
   })
