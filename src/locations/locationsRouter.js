@@ -34,11 +34,7 @@ function validateTime(time) {
 		return false;
 	}
 
-	if (time.split(':').length === 3) { // If it's a string, and is in the format HH:MM:SS, it's in military time, which works with the database, return true and exit the function to avoid the next check.
-		return true;
-	}
-
-	if (!time.includes('AM') && !time.includes('PM')) { // It needs to include either AM or PM. If one of these conditions is met, this block will not run
+	if (!time.includes(':')) { // This at least checks for a ":", which is typical in time data types.
 		return false;
 	}
 
