@@ -26,7 +26,7 @@ const serializeLocation = location => ({
 }); // sanitize anything the user can input with text
 
 function validateTime(time) {
-	if (time === null) { // This is permissible with our database, first check for this.
+	if (time === null) { // This is permissible with our database, first check for this. Exit the function to avoid other checks.
 		return true;
 	}
 
@@ -34,11 +34,15 @@ function validateTime(time) {
 		return false;
 	}
 
+	if (time.split(':').length === 3) { // If it's a string, and is in the format HH:MM:SS, it's in military time, which works with the database, return true and exit the function to avoid the next check.
+		return true;
+	}
+
 	if (!time.includes('AM') && !time.includes('PM')) { // It needs to include either AM or PM. If one of these conditions is met, this block will not run
 		return false;
 	}
 
-	return true;
+	return true; // If all this passes, it's a valid time type.
 }
   
 locationsRouter
