@@ -11,19 +11,35 @@ const jsonParser = express.json();
 
 const serializeLocation = location => ({
     id: location.id,
-    location_name: location.location_name,
-    street_address: location.street_address,
-    city: location.city,
-    state: location.state,
+    location_name: xss(location.location_name),
+    street_address: xss(location.street_address),
+    city: xss(location.city),
+    state: xss(location.state),
     zip: location.zip,
     location_longitude: location.location_longitude,
     location_latitude: location.location_latitude,
-    open_hour: location.open_hour,
-    close_hour: location.close_hour,
-    website: location.website,
+    open_hour: xss(location.open_hour),
+    close_hour: xss(location.close_hour),
+    website: xss(location.website),
     location_description: xss(location.location_description),
-    location_type: location.location_type
-  });
+    location_type: xss(location.location_type)
+}); // sanitize anything the user can input with text
+
+function validateTime(time) {
+	if (time === null) { // This is permissible with our database, first check for this.
+		return true;
+	}
+
+	if (typeof(time) !== "string") { // If it's not null, check if it's a string. If it's not, then it is some other data type and should not be allowed.
+		return false;
+	}
+
+	if (!time.includes('AM') && !time.includes('PM')) { // It needs to include either AM or PM. If one of these conditions is met, this block will not run
+		return false;
+	}
+
+	return true;
+}
   
 locationsRouter
 	.route('/')
@@ -61,6 +77,27 @@ locationsRouter
 			location_description,
 			location_type
 		};
+
+		if (!newLocation.open_hour) { // If this field isn't supplied, it defaults to `undefined`. Explicitly set it to null to allow insertion to database.
+			newLocation.open_hour = null;
+		}
+
+		if (!newLocation.close_hour) { // If this field isn't supplied, it defaults to `undefined`. Explicitly set it to null to allow insertion to database.
+			newLocation.close_hour = null;
+		}
+
+		// Check if the open_hour and close_hour fields are in the right data format before trying to insert it into the database.
+		if (!validateTime(newLocation.open_hour)) {
+			return res.status(400).json({
+				error: { message: `Please make sure the 'open_hour' field is in the format 'HH:MM AM' or 'HH:MM PM'.`}
+			});
+		}
+
+		if (!validateTime(newLocation.close_hour)) {
+			return res.status(400).json({
+				error: { message: `Please make sure the 'close_hour' field is in the format 'HH:MM AM' or 'HH:MM PM'.`}
+			});
+		}
 
 		const requiredFields = {
 			location_name,
