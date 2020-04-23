@@ -92,6 +92,12 @@ locationsRouter
 					}
 				})
 					.then(r => {
+						console.log(r.data.status);
+						if (r.data.status === 'ZERO_RESULTS') { // this checks if Google couldn't geocode what the user sends
+							return res.status(400).json({
+								error: {message: 'Could not verify this address'}
+							});
+						}
 						const coordinates = r.data.results[0].geometry.location;
 						const location_longitude = coordinates.lng;
 						const location_latitude = coordinates.lat;
