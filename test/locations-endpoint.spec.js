@@ -66,8 +66,8 @@ describe('Location Endpoints', function() {
             city: 'Denver',
             state: 'Colorado',
             zip: 80202,
-            open_hour: '10:00:00',
-            close_hour: '16:00:00',
+            open_hour: '10:00 AM',
+            close_hour: '04:00 PM',
             website: 'www.test.com',
             location_description: 'test description',
             location_type: 'Other Non-Profit'
@@ -84,8 +84,8 @@ describe('Location Endpoints', function() {
                     expect(res.body.city).to.eql(newLocation.city)
                     expect(res.body.state).to.eql(newLocation.state)
                     expect(res.body.zip).to.eql(newLocation.zip)
-                    expect(res.body.open_hour).to.eql(newLocation.open_hour)
-                    expect(res.body.close_hour).to.eql(newLocation.close_hour)
+                    expect(res.body.open_hour).to.eql("10:00:00") // The database converts the text into this datatype
+                    expect(res.body.close_hour).to.eql("16:00:00") // The database converts the text into this datatype
                     expect(res.body.website).to.eql(newLocation.website)
                     expect(res.body.location_description).to.eql(newLocation.location_description)
                     expect(res.body.location_type).to.eql(newLocation.location_type)
